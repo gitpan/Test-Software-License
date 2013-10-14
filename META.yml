@@ -1,0 +1,47 @@
+---
+abstract: "[One line description of module's purpose here]"
+author:
+  - 'Kevin Dawson <bowtie@cpan.org>'
+build_requires:
+  Test::More: 0.98
+configure_requires:
+  Module::Build::Tiny: 0.030
+dynamic_config: 0
+generated_by: 'Dist::Milla version v1.0.4, Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132830'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Test-Software-License
+no_index:
+  directory:
+    - t
+    - xt
+    - inc
+    - share
+    - eg
+    - examples
+requires:
+  Carp: 1.32
+  Data::Printer: 0.35
+  English: 0
+  Exporter: 5.68
+  File::Find::Rule: 0.33
+  File::Find::Rule::Perl: 1.13
+  File::Slurp: 9999.19
+  Software::LicenseUtils: 0.103005
+  Test::Builder: 0.98
+  Try::Tiny: 0.18
+  constant: 1.27
+  parent: 0.228
+  perl: 5.010000
+  strict: 0
+  version: 0.9904
+  warnings: 0
+resources:
+  bugtracker: https://github.com/kevindawson/Test-Software-License/issues
+  homepage: https://github.com/kevindawson/Test-Software-License
+  repository: https://github.com/kevindawson/Test-Software-License.git
+version: 0.001001
+x_contributors:
+  - 'bowtie <bowtie@cpan.org>'

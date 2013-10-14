@@ -1,0 +1,15 @@
+Build.PL
+Changes
+LICENSE
+MANIFEST
+META.json
+META.yml
+README
+cpanfile
+dist.ini
+lib/Test/Software/License.pm
+script/test01.pl
+t/00.load.t
+t/pod-coverage.t
+t/pod.t
+t/release-pod-syntax.t
