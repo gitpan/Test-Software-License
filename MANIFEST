@@ -7,8 +7,9 @@ META.yml
 README
 cpanfile
 dist.ini
+eg/test-software-license.t
 lib/Test/Software/License.pm
-script/test01.pl
+lib/Test/Software/LicenseUtils.pm
 t/00.load.t
 t/pod-coverage.t
 t/pod.t

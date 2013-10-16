@@ -1,5 +1,5 @@
 ---
-abstract: "[One line description of module's purpose here]"
+abstract: 'just another xt for Software::License'
 author:
   - 'Kevin Dawson <bowtie@cpan.org>'
 build_requires:
@@ -42,6 +42,6 @@ resources:
   bugtracker: https://github.com/kevindawson/Test-Software-License/issues
   homepage: https://github.com/kevindawson/Test-Software-License
   repository: https://github.com/kevindawson/Test-Software-License.git
-version: 0.001001
+version: 0.001003
 x_contributors:
   - 'bowtie <bowtie@cpan.org>'
