@@ -2,12 +2,12 @@ NAME
     Test::Software::License - just another xt for Software::License
 
 VERSION
-    This document describes Test::Software::License version 0.001002
+    This document describes Test::Software::License version 0.001005
 
 SYNOPSIS
             use Test::More;
             use Test::Requires {
-                    'Test::Software::License' => 0.00,
+                    'Test::Software::License' => 0.001,
             };
 
             all_software_license_ok();
@@ -57,5 +57,5 @@ LICENSE
     under the same terms as Perl itself.
 
 SEE ALSO
-    Software::License
+    Software::License XT::Manager
 
