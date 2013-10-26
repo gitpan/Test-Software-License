@@ -9,8 +9,8 @@ cpanfile
 dist.ini
 eg/test-software-license.t
 lib/Test/Software/License.pm
-lib/Test/Software/LicenseUtils.pm
 t/00.load.t
-t/pod-coverage.t
-t/pod.t
+t/01-pod.t
+t/02-pod-coverage.t
+t/07-report-prereqs.t
 t/release-pod-syntax.t
