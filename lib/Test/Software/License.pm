@@ -3,33 +3,30 @@ package Test::Software::License;
 use 5.008004;
 use warnings;
 use strict;
-use Carp;
 
 use version;
-our $VERSION = '0.001007';
-use English qw( -no_match_vars );    # Avoids reg-ex performance penalty
+our $VERSION = '0.002000';
+use English qw( -no_match_vars );
 local $OUTPUT_AUTOFLUSH = 1;
 
-use parent 0.225 qw(Exporter);
-
-# use Data::Printer {caller_info => 1, colored => 1,};
-use Software::LicenseUtils 0.103006;
-
+use parent 0.228 qw(Exporter);
+use Software::LicenseUtils 0.103007;
 use File::Slurp;
 use File::Find::Rule       ();
 use File::Find::Rule::Perl ();
 use Try::Tiny;
-use Parse::CPAN::Meta 1.4405;
+use Parse::CPAN::Meta 1.4409;
 
 use constant {FFR => 'File::Find::Rule', TRUE => 1, FALSE => 0, EMPTY => -1};
 
-use Test::Builder 0.98;
+use Test::Builder 1.001002;
 
 @Test::Software::License::EXPORT = qw(
 	all_software_license_ok
 );
 
 my $passed_a_test = FALSE;
+my $meta_author = FALSE;
 
 #######
 # import
@@ -51,7 +48,7 @@ sub import {
 #######
 sub all_software_license_ok {
 	my $options = shift if ref $_[0] eq 'HASH';
-	$options ||= {strict => FALSE};
+	$options ||= {strict => FALSE, diag => FALSE};
 	my $test = Test::Builder->new;
 	_from_perlscript_ok($options);
 	_from_perlmodule_ok($options);
@@ -78,7 +75,7 @@ sub _from_perlmodule_ok {
 		$test->skip('no perl_module found in lib');
 	}
 	else {
-		if (not $options->{strict}) {
+		if ($options->{diag}) {
 			my $found_perl_modules = $#files + 1;
 			$test->ok($files[0],
 				'found (' . $found_perl_modules . ') perl modules to test');
@@ -102,7 +99,7 @@ sub _from_perlscript_ok {
 			$test->skip('no perl_scripts found in ' . $dir);
 		}
 		else {
-			if (not $options->{strict}) {
+			if (not $options->{diag}) {
 				my $found_perl_scripts = $#files + 1;
 				$test->ok($files[0],
 					"found ($found_perl_scripts) perl script to test in $dir");
@@ -152,6 +149,8 @@ sub _from_metayml_ok {
 	if (-e 'META.yml') {
 		try {
 			my $meta_yml  = Parse::CPAN::Meta->load_file('META.yml');
+			$meta_author = $meta_yml->{author}[0];
+
 			my @guess_yml = _hack_guess_license_from_meta($meta_yml->{license});
 			if ($options->{strict}) {
 				$test->ok($guess_yml[0], "META.yml -> @guess_yml");
@@ -184,6 +183,8 @@ sub _from_metajson_ok {
 	if (-e 'META.json') {
 		try {
 			my $meta_json = Parse::CPAN::Meta->load_file('META.json');
+			$meta_author = $meta_json->{author}[0];
+
 			foreach my $json_license (@{$meta_json->{license}}) {
 				my @guess_json = _hack_guess_license_from_meta($json_license);
 				if ($options->{strict}) {
@@ -217,6 +218,8 @@ sub _check_for_license_file {
 
 	if ($options->{strict}) {
 		$test->ok(-e 'LICENSE', 'LICENSE file found');
+			my $license_file = read_file('LICENSE');
+			$test->like($license_file, qr/$meta_author/, 'LICENSE file contains META Author');
 	}
 	else {
 		if (-e 'LICENSE') {
@@ -253,31 +256,30 @@ __END__
 
 =head1 NAME
 
-Test::Software::License - just another xt for Software::License
+Test::Software::License - just another xt, for Software::License
 
 =head1 VERSION
 
-This document describes Test::Software::License version 0.001007
+This document describes Test::Software::License version 0.002000
 
 =head1 SYNOPSIS
 
 	use Test::More;
-	use Test::Requires {
-		'Test::Software::License' => 0.001,
-	};
+	use Test::Requires { 'Test::Software::License' => 0.002 };
 
 	all_software_license_ok();
 
-	# the following is brutal, if it exists it must have a license
+	# the following is brutal, if it exists it must have a valid license
 	# all_software_license_ok({ strict => 1 });
 
 	done_testing();
 
-For an example of a complete test file look in eg/test-software-license.t
+For an example of a complete test file look in eg/xt/software-license.t
 
 =head1 DESCRIPTION
 
-this should be treated as beta, as initial release
+This is the initial release of Test::Software::License it is intended to be
+used as part of your xt test.
 
 
 =head1 METHODS
@@ -286,8 +288,10 @@ this should be treated as beta, as initial release
 
 =item * all_software_license_ok
 
-This is the main method you should use, it uses all of the other methods to
-check your distribution for License information.
+This is the main method you should use, it uses all of the internal methods to
+check your distribution for License information. It checks the contents of
+scripts/bin along with lib, it expects to find META.[yml|json],
+just for good measure it checks for the presence of a LICENSE file.
 
 	all_software_license_ok();
 
@@ -296,7 +300,11 @@ use the following, its brutal, good for finding CPANTS issues if that is your th
 
 	all_software_license_ok({ strict => 1 });
 
+If you are trying to track down a issue you will get the best results with prove -lv
+
 =item * import
+
+
 
 =back
 
@@ -322,6 +330,7 @@ it under the same terms as Perl itself.
 =head1 SEE ALSO
 
 L<Software::License>
+
 L<XT::Manager>
 
 =cut

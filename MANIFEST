@@ -7,10 +7,11 @@ META.yml
 README
 cpanfile
 dist.ini
-eg/test-software-license.t
+eg/xt/software-license.t
 lib/Test/Software/License.pm
-t/00.load.t
-t/01-pod.t
-t/02-pod-coverage.t
+t/01-compile.t
+t/02-exports.t
+t/03-pod.t
+t/04-pod-coverage.t
 t/07-report-prereqs.t
 t/release-pod-syntax.t
